@@ -1,7 +1,9 @@
 using KittensApi.Adapters;
 using KittensApi.Config;
+using KittensApi.Database;
 using KittensApi.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,9 @@ var appSettings = new AppSettings();
 var config = builder.Configuration.GetSection(settingsRoot);
 config.Bind(appSettings);
 builder.Services.AddSingleton(appSettings);
+
+// Database
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(appSettings.Database.ConnectionString));
 
 // Services
 builder.Services.AddScoped<IImageProcessor, ImageProcessor>();

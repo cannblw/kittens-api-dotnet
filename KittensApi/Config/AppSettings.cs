@@ -4,5 +4,6 @@ namespace KittensApi.Config
     {
         public CatsApiConfig CatsApi { get; set; }
         public AuthenticationConfig Authentication { get; set; }
+        public DatabaseConfig Database { get; set; }
     }
 }
