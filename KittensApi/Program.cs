@@ -1,4 +1,5 @@
 using KittensApi.Config;
+using KittensApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,9 @@ var appSettings = new AppSettings();
 var config = builder.Configuration.GetSection(settingsRoot);
 config.Bind(appSettings);
 builder.Services.AddSingleton(appSettings);
+
+// Services
+builder.Services.AddHttpClient<ICatsService, CatsService>();
 
 var app = builder.Build();
 
