@@ -5,6 +5,6 @@ namespace KittensApi.Domain
     public class BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
     }
 }
