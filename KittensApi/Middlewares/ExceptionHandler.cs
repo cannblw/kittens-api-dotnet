@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using KittensApi.Exceptions;
 
 namespace KittensApi.Middlewares
 {
@@ -28,11 +26,6 @@ namespace KittensApi.Middlewares
             try
             {
                 await _next(httpContext);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogError(ex, "Entity not found");
-                await SendErrorResponse(httpContext, ex, HttpStatusCode.NotFound);
             }
             catch (Exception ex)
             {
