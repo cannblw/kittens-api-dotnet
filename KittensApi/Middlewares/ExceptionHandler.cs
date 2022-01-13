@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using KittensApi.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,11 @@ namespace KittensApi.Middlewares
             try
             {
                 await _next(httpContext);
+            }
+            catch (UnauthorizedException ex)
+            {
+                _logger.LogError(ex, "User not authorized to access endpoint");
+                await SendErrorResponse(httpContext, ex, HttpStatusCode.Unauthorized);
             }
             catch (Exception ex)
             {
