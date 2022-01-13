@@ -13,6 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Override conventions
+builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
+
 // Configuration
 var appSettings = new AppSettings();
 var config = builder.Configuration.GetSection(settingsRoot);
