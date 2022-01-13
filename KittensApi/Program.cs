@@ -1,15 +1,23 @@
+using KittensApi.Config;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+const string settingsRoot = "Settings";
+
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configuration
+var appSettings = new AppSettings();
+var config = builder.Configuration.GetSection(settingsRoot);
+config.Bind(appSettings);
+builder.Services.AddSingleton(appSettings);
 
 var app = builder.Build();
 
