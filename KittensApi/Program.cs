@@ -1,6 +1,7 @@
 using KittensApi.Adapters;
 using KittensApi.Config;
 using KittensApi.Database;
+using KittensApi.Middlewares;
 using KittensApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
 
