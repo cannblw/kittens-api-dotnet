@@ -4,6 +4,6 @@ namespace KittensApi.Adapters
 {
     public interface IImageProcessor
     {
-        Task<byte[]> RotateImageUpsideDown(byte[] image);
+        Task<byte[]> RotateImageUpsideDown(byte[] imageBytes);
     }
 }
