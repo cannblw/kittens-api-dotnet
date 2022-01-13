@@ -1,3 +1,4 @@
+using KittensApi.Adapters;
 using KittensApi.Config;
 using KittensApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,7 @@ config.Bind(appSettings);
 builder.Services.AddSingleton(appSettings);
 
 // Services
+builder.Services.AddScoped<IImageProcessor, ImageProcessor>();
 builder.Services.AddHttpClient<ICatsService, CatsService>();
 
 var app = builder.Build();
