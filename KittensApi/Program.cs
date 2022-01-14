@@ -4,7 +4,6 @@ using KittensApi.Adapters;
 using KittensApi.Config;
 using KittensApi.Database;
 using KittensApi.Domain;
-using KittensApi.Mapping;
 using KittensApi.Middlewares;
 using KittensApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
