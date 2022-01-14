@@ -23,19 +23,14 @@ namespace KittensApi.Controllers
         }
 
         [HttpPost("register")]
-        // TODO: Don't return object
-        public async Task<ActionResult<object>> RegisterUser([FromBody] RegisterUserAction action)
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<RegistrationDetails>> RegisterUser([FromBody] RegisterUserAction action)
         {
             var (user, token) = await _authService.RegisterUser(action.Email, action.UserName, action.Password);
 
             var userDetails = _mapper.Map<UserDetails>(user);
-            
-            // TODO: Convert to DTO
-            return new
-            {
-                User = userDetails,
-                Token = token
-            };
+
+            return new RegistrationDetails(userDetails, token);
         }
     }
 }
