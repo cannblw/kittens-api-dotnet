@@ -1,8 +1,10 @@
 using System.Text;
+using AutoMapper;
 using KittensApi.Adapters;
 using KittensApi.Config;
 using KittensApi.Database;
 using KittensApi.Domain;
+using KittensApi.Mapping;
 using KittensApi.Middlewares;
 using KittensApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +20,12 @@ const string settingsRoot = "Settings";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+
+// AutoMapper
+var mapperConfiguration = new MapperConfiguration(opt => opt.AddProfile(new AutoMapperProfile()));
+IMapper mapper = mapperConfiguration.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
