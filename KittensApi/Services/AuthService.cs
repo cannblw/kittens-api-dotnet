@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KittensApi.Config;
 using KittensApi.Domain;
+using KittensApi.Dto.Details;
 using KittensApi.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -25,7 +26,7 @@ namespace KittensApi.Services
             _settings = settings;
         }
 
-        public async Task<(User, string)> RegisterUser(string email, string userName, string password)
+        public async Task<(User user, string token)> RegisterUser(string email, string userName, string password)
         {
             var existingUser = await _userManager.FindByEmailAsync(email);
 
@@ -48,7 +49,26 @@ namespace KittensApi.Services
 
             return (newUser, jwtToken);
         }
-        
+
+        public async Task<(User user, string token)> Login(string userName, string password)
+        {
+            var existingUser = await _userManager.FindByNameAsync(userName);
+
+            if (existingUser == null) {
+                throw new UnauthorizedException();
+            }
+
+            var hasValidCredentials = await _userManager.CheckPasswordAsync(existingUser, password);
+            if (!hasValidCredentials)
+            {
+                throw new UnauthorizedException();
+            }
+
+            var jwtToken = GenerateJwtToken(existingUser);
+
+            return (existingUser, jwtToken);
+        }
+
         private string GenerateJwtToken(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();

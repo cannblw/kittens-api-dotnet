@@ -46,5 +46,16 @@ namespace KittensApi.Controllers
                 throw new KnownErrorException(ex.Message);
             }
         }
+        
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginDetails>> Login([FromBody] LoginAction action)
+        {
+            _logger.LogInformation("User {UserName} attempting login", action.UserName);
+
+                var (user, token) = await _authService.Login(action.UserName, action.Password);
+                
+                var userDetails = _mapper.Map<UserDetails>(user);
+                return new LoginDetails(userDetails, token);
+        }
     }
 }

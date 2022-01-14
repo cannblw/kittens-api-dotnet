@@ -5,6 +5,7 @@ namespace KittensApi.Services
 {
     public interface IAuthService
     {
-        public Task<(User, string)> RegisterUser(string email, string userName, string password);
+        public Task<(User user, string token)> RegisterUser(string email, string userName, string password);
+        public Task<(User user, string token)> Login(string userName, string password);
     }
 }
