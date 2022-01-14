@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using KittensApi.Dto.Details;
 using KittensApi.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,9 +47,9 @@ namespace KittensApi.Middlewares
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)statusCode;
 
-            var responseBody = new ObjectResult(new
+            var responseBody = new ObjectResult(new ErrorDetails
             {
-                errorMessage = exception.Message,
+                ErrorMessage = exception.Message,
             }) { StatusCode = (int)statusCode };
             
             var serializedBody = JsonSerializer.Serialize(responseBody.Value);
