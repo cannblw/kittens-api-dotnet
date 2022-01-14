@@ -15,6 +15,11 @@ namespace KittensApi.Middlewares
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionHandler> _logger;
 
+        private readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
         public ExceptionHandler(
             RequestDelegate next,
             ILogger<ExceptionHandler> logger)
@@ -57,7 +62,7 @@ namespace KittensApi.Middlewares
                 ErrorMessage = exception.Message,
             }) { StatusCode = (int)statusCode };
             
-            var serializedBody = JsonSerializer.Serialize(responseBody.Value);
+            var serializedBody = JsonSerializer.Serialize(responseBody.Value, _serializerOptions);
 
             await httpContext.Response.WriteAsync(serializedBody);
         }
