@@ -9,7 +9,6 @@ namespace KittensApi.Dto.Actions
         public string Email { get; set; }
      
         [Required]
-        [EmailAddress]
         public string UserName { get; set; }
         
         [Required]
