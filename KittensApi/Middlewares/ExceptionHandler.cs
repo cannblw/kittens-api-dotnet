@@ -34,6 +34,11 @@ namespace KittensApi.Middlewares
                 _logger.LogError(ex, "User not authorized to access endpoint");
                 await SendErrorResponse(httpContext, ex, HttpStatusCode.Unauthorized);
             }
+            catch (KnownErrorException ex)
+            {
+                _logger.LogError(ex, "An error happened");
+                await SendErrorResponse(httpContext, ex, HttpStatusCode.InternalServerError);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unknown error");
