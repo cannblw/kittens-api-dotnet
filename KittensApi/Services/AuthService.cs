@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using KittensApi.Config;
 using KittensApi.Domain;
-using KittensApi.Dto.Details;
 using KittensApi.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -68,6 +67,19 @@ namespace KittensApi.Services
             var jwtToken = GenerateJwtToken(existingUser);
 
             return (existingUser, jwtToken);
+        }
+
+        public void RefreshJwtToken(string refreshToken)
+        {
+            /*
+             * I did not implement this on purpose. I would do it if I had the time, but I will explain what this would do.
+             *
+             * This endpoint would receive the refresh token, which is similar to the normal JWT token, but with a longer
+             * expiration date. The server would validate that this refresh token is valid and would send the user a new
+             * JWT token. The new JWT token will be used to make requests instead of the old, expired token.
+             */
+
+            throw new KnownErrorException("This is not implemented. Please, go to AuthService.cs and read the comment");
         }
 
         public async Task<User> GetUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)

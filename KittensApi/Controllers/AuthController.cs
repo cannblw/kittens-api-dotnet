@@ -59,6 +59,14 @@ namespace KittensApi.Controllers
                 var userDetails = _mapper.Map<UserDetails>(user);
                 return new LoginDetails(userDetails, token);
         }
+        
+        [HttpPost("refresh-token")]
+        public void RefreshJwtToken([FromBody] RefreshJwtTokenAction action)
+        {
+            _logger.LogInformation("Attempting to refresh JWT token");
+
+            _authService.RefreshJwtToken(action.RefreshToken);
+        }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("me")]

@@ -10,6 +10,8 @@ namespace KittensApi.Services
         
         public Task<(User user, string token)> Login(string userName, string password);
         
+        public void RefreshJwtToken(string oldToken);
+
         public Task<User> GetUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal);
     }
 }
