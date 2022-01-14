@@ -2,6 +2,8 @@ using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using KittensApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,6 +12,7 @@ namespace KittensApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CatsController : ControllerBase
     {
         private readonly ILogger<CatsController> _logger;
