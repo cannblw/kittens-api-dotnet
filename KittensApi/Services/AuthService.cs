@@ -54,7 +54,8 @@ namespace KittensApi.Services
         {
             var existingUser = await _userManager.FindByNameAsync(userName);
 
-            if (existingUser == null) {
+            if (existingUser == null)
+            {
                 throw new UnauthorizedException();
             }
 
@@ -69,6 +70,25 @@ namespace KittensApi.Services
             return (existingUser, jwtToken);
         }
 
+        public async Task<User> GetUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)
+        {
+            var userName = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "UserName")?.Value;
+
+            if (userName == null)
+            {
+                throw new UnauthorizedException();
+            }
+            
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+            {
+                throw new UnauthorizedException();
+            }
+
+            return user;
+        }
+
         private string GenerateJwtToken(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -79,9 +99,10 @@ namespace KittensApi.Services
             {
                 Subject = new ClaimsIdentity(new []
                 {
-                    new Claim("Id", user.Id), 
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim("UserID", user.Id),
+                    new Claim("UserName", user.UserName),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(_settings.Authentication.JwtHoursUntilExpiration),

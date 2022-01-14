@@ -4,6 +4,8 @@ using KittensApi.Dto.Actions;
 using KittensApi.Dto.Details;
 using KittensApi.Exceptions;
 using KittensApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -56,6 +58,17 @@ namespace KittensApi.Controllers
                 
                 var userDetails = _mapper.Map<UserDetails>(user);
                 return new LoginDetails(userDetails, token);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("me")]
+        public async Task<ActionResult<UserDetails>> GetMyUser()
+        {
+            _logger.LogInformation("Getting current user");
+         
+            var user = await _authService.GetUserByClaimsPrincipal(HttpContext.User);
+            
+            return _mapper.Map<UserDetails>(user);
         }
     }
 }
