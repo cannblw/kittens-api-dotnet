@@ -39,7 +39,7 @@ namespace KittensApi.Services
             
             if (!isCreated.Succeeded)
             {
-                var errorMessage = string.Join(", ", isCreated.Errors.Select(x => x.Description).ToList());
+                var errorMessage = string.Join(" ", isCreated.Errors.Select(x => x.Description).ToList());
                 
                 throw new KnownErrorException(errorMessage);
             }
