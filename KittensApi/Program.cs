@@ -1,13 +1,18 @@
+using System.Text;
 using KittensApi.Adapters;
 using KittensApi.Config;
 using KittensApi.Database;
+using KittensApi.Domain;
 using KittensApi.Middlewares;
 using KittensApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 const string settingsRoot = "Settings";
 
@@ -33,6 +38,35 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(appSettings.Dat
 // Services
 builder.Services.AddScoped<IImageProcessor, ImageProcessor>();
 builder.Services.AddHttpClient<ICatsService, CatsService>();
+
+// Authentication
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        var key = Encoding.ASCII.GetBytes(appSettings.Authentication.JwtSecret);
+
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            RequireExpirationTime = false
+        };
+    });
+
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    }).AddEntityFrameworkStores<AppDbContext>();
+
 
 var app = builder.Build();
 

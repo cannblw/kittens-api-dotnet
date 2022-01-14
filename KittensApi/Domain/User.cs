@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace KittensApi.Domain
 {
-    public class User : BaseEntity
+    public class User : IdentityUser
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
 }

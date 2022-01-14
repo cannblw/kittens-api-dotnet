@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using KittensApi.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace KittensApi.Database
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public DbSet<User> Users { get; set; }
         
