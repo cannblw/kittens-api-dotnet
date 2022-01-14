@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using KittensApi.Dto.Actions;
+using KittensApi.Dto.Details;
 using KittensApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +12,14 @@ namespace KittensApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        
-        public AuthController(IAuthService authService)
+        private readonly IMapper _mapper;
+
+        public AuthController(
+            IAuthService authService,
+            IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -22,10 +28,12 @@ namespace KittensApi.Controllers
         {
             var (user, token) = await _authService.RegisterUser(action.Email, action.UserName, action.Password);
 
+            var userDetails = _mapper.Map<UserDetails>(user);
+            
             // TODO: Convert to DTO
             return new
             {
-                User = user,
+                User = userDetails,
                 Token = token
             };
         }
