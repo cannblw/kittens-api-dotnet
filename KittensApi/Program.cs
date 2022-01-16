@@ -44,6 +44,7 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(appSettings.Dat
 
 // Services
 builder.Services.AddScoped<IImageProcessor, ImageProcessor>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<ICatsService, CatsService>();
 
 // Authentication
