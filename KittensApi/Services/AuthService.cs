@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace KittensApi.Services
             {
                 var errorMessage = string.Join(" ", isCreated.Errors.Select(x => x.Description).ToList());
                 
-                throw new KnownErrorException(errorMessage);
+                throw new KnownErrorException(errorMessage, HttpStatusCode.InternalServerError);
             }
             
             var jwtToken = GenerateJwtToken( newUser);
@@ -79,7 +80,7 @@ namespace KittensApi.Services
              * JWT token. The new JWT token will be used to make requests instead of the old, expired token.
              */
 
-            throw new KnownErrorException("This is not implemented. Please, go to AuthService.cs and read the comment");
+            throw new KnownErrorException("This is not implemented. Please, go to AuthService.cs and read the comment", HttpStatusCode.NotImplemented);
         }
 
         public async Task<User> GetUserByClaimsPrincipal(ClaimsPrincipal claimsPrincipal)

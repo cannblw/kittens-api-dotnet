@@ -42,7 +42,8 @@ namespace KittensApi.Middlewares
             catch (KnownErrorException ex)
             {
                 _logger.LogError(ex, "An error happened");
-                await SendErrorResponse(httpContext, ex, HttpStatusCode.InternalServerError);
+                var statusCode = ex.httpStatusCode ?? HttpStatusCode.InternalServerError;
+                await SendErrorResponse(httpContext, ex, statusCode);
             }
             catch (Exception ex)
             {

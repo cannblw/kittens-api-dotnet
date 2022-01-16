@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using KittensApi.Dto.Actions;
@@ -45,7 +46,7 @@ namespace KittensApi.Controllers
             catch (UserAlreadyExistsException ex)
             {
                 _logger.LogError(ex, "Error creating user {UserName}", action.UserName);
-                throw new KnownErrorException(ex.Message);
+                throw new KnownErrorException(ex.Message, HttpStatusCode.BadRequest);
             }
         }
         
