@@ -42,7 +42,7 @@ namespace KittensApi.Services
             {
                 var errorMessage = string.Join(" ", isCreated.Errors.Select(x => x.Description).ToList());
                 
-                throw new KnownErrorException(errorMessage, HttpStatusCode.InternalServerError);
+                throw new KnownErrorException(errorMessage, HttpStatusCode.BadRequest);
             }
             
             var jwtToken = GenerateJwtToken( newUser);
